@@ -7,11 +7,11 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int[] arr1 = new int[]{1,2, 3, 4, 5};
-        int[] arr2 = new int[]{2,3, 4, 6, 10};
+        int[] arr1 = new int[]{1, 2, 3, 4, 5};
+        int[] arr2 = new int[]{2, 3, 4, 6, 10};
         int[] arr3 = mergeArray(arr1, arr2);
 
-        Arrays.stream(arr3).forEach((i) -> System.out.print(arr3[i-1] + " "));
+        Arrays.stream(arr3).forEach((i) -> System.out.print(arr3[i - 1] + " "));
         System.out.println();
 
         String[] roles = new String[]{"Городничий",
@@ -29,7 +29,11 @@ public class Main {
                 "Лука Лукич: Господи боже! еще и с секретным предписаньем!"
         };
 
+        long start = System.nanoTime();
         System.out.println(printTextPerRole(roles, textLines));
+        long finish = System.nanoTime();
+        System.out.println(finish - start);
+
     }
 
     public static int[] mergeArray(int[] arr1, int[] arr2) {
@@ -58,26 +62,16 @@ public class Main {
     }
 
     public static String printTextPerRole(String[] roles, String[] textLines) {
-        HashMap<String, StringBuilder> scenario = new HashMap<>();
-        for (int i = 0; i < roles.length; i++) {
-            scenario.put(roles[i], null);
-        }
+        StringBuilder text = new StringBuilder();
         for (int index = 0; index < roles.length; index++) {
-            scenario.put(roles[index], new StringBuilder(roles[index] + ":\n"));
+            text.append(new StringBuilder(roles[index]) + ":\n");
             for (int element = 0; element < textLines.length; element++) {
-                String name = textLines[element].substring(0, textLines[element].indexOf(":"));
-                if (roles[index].equals(name)) {
-                    StringBuilder tempString = scenario.get(roles[index]);
-                    String textToString = textLines[element].substring(textLines[element].indexOf(":") + 1);
-                    tempString.append(element + 1 + ")" + textToString + "\n");
-                    scenario.put(roles[index], tempString);
+                if (roles[index].equals(textLines[element].substring(0, textLines[element].indexOf(":")))) {
+                    text.append((element + 1) + ")" +
+                            textLines[element].substring(textLines[element].indexOf(":") + 1) + "\n");
                 }
             }
-        }
-        StringBuilder text = new StringBuilder();
-        for (int i = 0; i < roles.length; i++) {
-            text.append(scenario.get(roles[i]));
-            if (i != roles.length - 1) {
+            if (index != roles.length - 1) {
                 text.append("\n");
             }
         }
@@ -85,7 +79,5 @@ public class Main {
     }
 
 }
-
-
 
 
